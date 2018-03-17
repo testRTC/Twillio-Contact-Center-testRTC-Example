@@ -1,0 +1,52 @@
+{
+    "_id": "5a9ac75ab3b15d0011c50c3d",
+    "def_sort": "twillio contact center - video call",
+    "serviceUrlOpen": false,
+    "stared": false,
+    "lastRankDelta": null,
+    "lastRank": null,
+    "runCount": 0,
+    "lastRunDate": null,
+    "__v": 0,
+    "project": "581f34ce30d6531300a8c812",
+    "testProfiles": [
+        {
+            "browser": "linux-chrome-stable",
+            "location": "East-US",
+            "network": "No throttling",
+            "firewall": "FW_NO_FW",
+            "media": "KrankyGeek-2-1080p.mp4"
+        },
+        {
+            "browser": "linux-chrome-stable",
+            "location": "West-US",
+            "network": "No throttling",
+            "firewall": "FW_NO_FW",
+            "media": "Salsa-720p.mp4"
+        }
+    ],
+    "serviceUrl": "https://<YOUR-SERVER-URL-HERE>",
+    "runOptions": "#session:2",
+    "info": "This sample shows how to use the Twilio Contact Center Reference Application Video Call feature.\nProbe 1: Connects as the client to the service\nProbe 2: Connect as the agent and accepts the incoming video call",
+    "name": "Twillio Contact Center - Video Call",
+    "browserType": "Chrome",
+    "testScript": "\r\nvar agentType = Number(process.env.RTC_IN_SESSION_ID);\r\nvar sec = 1000;\r\nvar agentName = 'JohnDoe'\r\n\r\n\r\nclient\r\n    .rtcSetTestExpectation(\"audio.in == 1\")\r\n    .rtcSetTestExpectation(\"audio.out == 1\")\r\n    .rtcSetTestExpectation(\"video.in == 1\")\r\n    .rtcSetTestExpectation(\"video.out == 1\")\r\n    .rtcSetTestExpectation(\"audio.in.bitrate > 0\")\r\n    .rtcSetTestExpectation(\"audio.out.bitrate > 0\")\r\n    .rtcSetTestExpectation(\"video.in.bitrate > 0\")\r\n    .rtcSetTestExpectation(\"video.out.bitrate > 0\");\r\n\r\n\r\n\r\nfunction clientLogin(username){\r\n    client\r\n    \t.url(process.env.RTC_SERVICE_URL+'/contact/video.html')\r\n\t    .waitForElementVisible('body', 10*sec)\r\n\t    .pause(1000)\r\n\t    .setValue('input[name=identity]',username)\r\n    \t.click('button[type=submit]')\r\n    \t.waitForElementVisible('#local-media',10*sec)\r\n    \t.pause(2*sec)\r\n\t    .rtcScreenshot(\"Alone in call\")\r\n}\r\n\r\nfunction agentLogin(username){\r\n    client\r\n        .url(process.env.RTC_SERVICE_URL+'/callcenter/index.html')\r\n    \t.waitForElementVisible('body', 10*sec)\r\n\t    .pause(1000)\r\n\t    .setValue('input[name=friendlyName]',username)\r\n\t    .click('button[type=submit]')\r\n\t    .rtcScreenshot(\"Agent logged in\")\r\n\t    .pause(2000)\r\n\t    .waitForElementVisible('td.accept-panel>button',10*sec)\r\n        .click('td.accept-panel>button')\r\n        .pause(1000)\r\n        .rtcScreenshot(\"Agent accepted call\")\r\n    \r\n}\r\n\r\nfunction performCall(duration){\r\n    client\r\n    .pause((duration/2)*sec)\r\n    .rtcScreenshot(\"In call\")\r\n    .pause((duration/2)*sec)\r\n}\r\n\r\n\r\n// Main code logic\r\n    if (agentType === 1) \r\n        {\r\n            clientLogin(process.env.RTC_AGENT_NAME)\r\n        }\r\n    else\r\n        {\r\n            agentLogin(agentName)\r\n        }\r\n        \r\n    performCall(60)\r\n",
+    "parameters": {
+        "iterationMode": "loop",
+        "loopCount": 1,
+        "duration": 10,
+        "concurrentUsers": 2
+    },
+    "isRemote": false,
+    "createDate": "2018-03-03T16:03:38.841Z",
+    "restangularEtag": "W/\"b9c-NbPZd4+aVvf4IRRx+9ZdBg\"",
+    "route": "5a9ac75ab3b15d0011c50c3d",
+    "reqParams": null,
+    "restangularized": true,
+    "fromServer": true,
+    "parentResource": {
+        "route": "test_definitions",
+        "parentResource": null
+    },
+    "restangularCollection": false
+}

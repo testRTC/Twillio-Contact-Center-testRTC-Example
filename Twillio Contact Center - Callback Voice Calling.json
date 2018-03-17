@@ -1,0 +1,45 @@
+{
+    "_id": "5a9ac76286c03900113b6ec2",
+    "def_sort": "twillio contact center - callback voice calling",
+    "serviceUrlOpen": false,
+    "stared": false,
+    "lastRankDelta": null,
+    "lastRank": null,
+    "runCount": 1,
+    "lastRunDate": "2018-03-03T16:40:34.321Z",
+    "__v": 0,
+    "project": "581f34ce30d6531300a8c812",
+    "testProfiles": [
+        {
+            "browser": "linux-chrome-stable",
+            "location": "any",
+            "network": "No throttling",
+            "firewall": "FW_NO_FW",
+            "media": "VOA-VGA.mp4"
+        }
+    ],
+    "serviceUrl": "https://<YOUR-SERVER-URL-HERE>",
+    "runOptions": "#session:1",
+    "info": "This sample shows how to automate a callback voice for the Twilio Contact Center reference application.\n\nWe need a single probe here, which acts as the Agent who will dial out to the user.",
+    "name": "Twillio Contact Center - Callback Voice Calling",
+    "browserType": "Chrome",
+    "testScript": "var customerPhoneNumber = '<YOUR-CUSTOMER-PHONE-NUMBER-HERE>';\r\nvar agentName = 'JohnDoe';\r\nvar sec = 1000;\r\n\r\n\r\nclient\r\n    .rtcSetTestExpectation(\"audio.in == 1\")\r\n    .rtcSetTestExpectation(\"audio.out == 1\")\r\n    .rtcSetTestExpectation(\"audio.in.bitrate > 0\")\r\n    .rtcSetTestExpectation(\"audio.out.bitrate > 0\")\r\n\r\n\r\nfunction agentLogin(username){\r\n    client\r\n        .url(process.env.RTC_SERVICE_URL+'/callcenter/index.html')\r\n        .rtcScreenshot(\"Operator screen\")\r\n    \t.waitForElementVisible('body', 10*sec)\r\n\t    .setValue('input[name=friendlyName]',username)\r\n\t    .click('button[type=submit]')\r\n\t    .rtcScreenshot(\"Operator logged in\")\r\n}\r\n\r\nfunction agentCallback(number){\r\n    client\r\n      .waitForElementVisible('input[name=phoneNumber]',3*sec)\r\n      .setValue('input[name=phoneNumber]',number)\r\n      .pause(1*sec)\r\n      .click('section > button')\r\n      .pause(30*sec)\r\n      .click('section > button')\r\n      }\r\n\r\n\r\n//Code logic\r\nagentLogin(agentName)\r\nagentCallback(customerPhoneNumber)\r\n",
+    "parameters": {
+        "iterationMode": "loop",
+        "loopCount": 1,
+        "duration": 10,
+        "concurrentUsers": 1
+    },
+    "isRemote": false,
+    "createDate": "2018-03-03T16:03:46.166Z",
+    "restangularEtag": "W/\"7e4-jkmIgcSb1GKcc0L8sq2Iww\"",
+    "route": "5a9ac76286c03900113b6ec2",
+    "reqParams": null,
+    "restangularized": true,
+    "fromServer": true,
+    "parentResource": {
+        "route": "test_definitions",
+        "parentResource": null
+    },
+    "restangularCollection": false
+}

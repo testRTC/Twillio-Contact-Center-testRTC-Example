@@ -1,0 +1,45 @@
+{
+    "_id": "5a9ac767b3b15d0011c50c3e",
+    "testScript": "\r\nvar dialerURL = 'https://<YOUR-AWS-LAMBDA-REST-API-HERE>';\r\nvar agentName = 'JohnDoe'\r\nvar sec = 1000;\r\n\r\nclient\r\n    .rtcSetTestExpectation(\"audio.in == 1\")\r\n    .rtcSetTestExpectation(\"audio.out == 1\")\r\n    .rtcSetTestExpectation(\"audio.in.bitrate > 0\")\r\n    .rtcSetTestExpectation(\"audio.out.bitrate > 0\")\r\n\r\n\r\nfunction agentLogin(username){\r\n    client\r\n        .url(process.env.RTC_SERVICE_URL+'/callcenter/index.html')\r\n        .rtcScreenshot(\"Agent screen\")\r\n    \t.waitForElementVisible('body', 10*sec)\r\n\t    .setValue('input[name=friendlyName]',username)\r\n\t    .click('button[type=submit]')\r\n\t    .rtcScreenshot(\"Agent logged in\")\r\n}\r\n\r\nfunction agentAcceptCall(){\r\n    client\r\n      .waitForElementVisible('td.accept-panel > button', 30*sec)\r\n      .click('td.accept-panel > button')\r\n      //In call\r\n      .pause(25000)\r\n       .rtcScreenshot(\"Agent in call\")\r\n      .click('button[ng-click=\"hangup()\"]')\r\n      .pause(1500)\r\n      .click('button[ng-click=\"complete()\"]')\r\n       .rtcScreenshot(\"Agent hangup\")\r\n      }\r\n\r\nfunction invokeIncomingCall(dialerURL) {\r\n    client\r\n        .pause(1000)\r\n        .rtcActivateWebhook(dialerURL, {}, function(answer) { })\r\n        .pause(1000);\r\n}\r\n\r\n//Code logic\r\n\r\nagentLogin(agentName)\r\ninvokeIncomingCall(dialerURL)\r\nagentAcceptCall()\r\n\r\n\r\n\r\n\r\n\r\n",
+    "browserType": "Chrome",
+    "name": "Twilio Contact Center - Inbound Voice Calling",
+    "info": "This sample shows how to automate an inbound voice call for the Twilio Contact Center reference application.\n\nWe need a single probe here, which acts as the Agent who will receive the PSTN call from the customer.",
+    "runOptions": "#session:1",
+    "serviceUrl": "https://<YOUR-SERVER-URL-HERE>",
+    "testProfiles": [
+        {
+            "browser": "linux-chrome-stable",
+            "location": "any",
+            "network": "No throttling",
+            "firewall": "FW_NO_FW",
+            "media": "VOA-VGA.mp4"
+        }
+    ],
+    "project": "581f34ce30d6531300a8c812",
+    "__v": 0,
+    "lastRunDate": "2018-03-03T17:18:43.139Z",
+    "runCount": 1,
+    "lastRank": null,
+    "lastRankDelta": null,
+    "stared": false,
+    "serviceUrlOpen": false,
+    "def_sort": "twilio contact center - inbound voice calling",
+    "parameters": {
+        "concurrentUsers": 1,
+        "duration": 10,
+        "loopCount": 1,
+        "iterationMode": "loop"
+    },
+    "isRemote": false,
+    "createDate": "2018-03-03T16:03:51.826Z",
+    "restangularEtag": "W/\"943-vhS4X09yhCfC6ulftVCqDg\"",
+    "route": "5a9ac767b3b15d0011c50c3e",
+    "reqParams": null,
+    "restangularized": true,
+    "fromServer": true,
+    "parentResource": {
+        "route": "test_definitions",
+        "parentResource": null
+    },
+    "restangularCollection": false
+}
